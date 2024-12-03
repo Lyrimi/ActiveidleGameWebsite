@@ -1,3 +1,12 @@
+/** @type {HTMLParagraphElement} */
+const containerPoints = document.getElementById("Points")
+const containerCurUpgrades = document.getElementById("Upgrades")
+const conatinerCurPrice = document.getElementById("UpgradesCost")
+const containerRush = document.getElementById("rush")
+const containerRent = document.getElementById("rent")
+
+
+
 
 //shop
 var shopItems = ["Multipliere", "MoreClicks", "Rush", "AutoClicker DON'T", "Increase Rent"]
@@ -18,9 +27,11 @@ var rentGrow = 1.05
 var rentMaxTimer = 100
 var rentTimer = 100
 
+var lost = false
 
 var lastButtonPressed = 2
 
+//found this online
 function getRandomInt(min, max) {
     const minCeiled = Math.ceil(min);
     const maxFloored = Math.floor(max);
@@ -91,6 +102,13 @@ function givePoints(Button){
     }
 }
 
+function cheater(){
+    rentMaxTimer = 0
+    rentTimer = 0
+    rentGrow = 2
+    rentActive = true
+}
+
 function setRush(){
     rushTime = 150
     rushActive = true
@@ -134,6 +152,24 @@ function update(){
         else{
             rushCooldown -= 1
         }
+    }
+
+    
+    if (rentTimer > 0 && rentActive){
+        rentTimer -= 1
+    }
+    else if(rentActive){
+        points -= rentAmount
+        rentAmount = rentAmount*rentGrow
+        rentTimer = rentMaxTimer
+        console.log(points, rentAmount)
+        
+        if(points < 0){
+            lost = true
+        }
+    }
+    else if(points > 10){
+        rentActive = true
     }
 }
 
